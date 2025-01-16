@@ -31,7 +31,7 @@ public class Topic {
 
   private String title;
 
-  private String explanation;
+  private String description;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "topic")
   private List<Comment> comments;
