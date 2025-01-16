@@ -1,6 +1,6 @@
 crate table comment (
   id bigint auto_increment primary key,
-  message text unique not null,
+  message text unique(message(255)) not null,
   topic_id bigint not null,
   author bigint not null,
   created_at datetime not null,
