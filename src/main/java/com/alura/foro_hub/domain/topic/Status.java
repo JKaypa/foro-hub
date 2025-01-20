@@ -1,11 +1,12 @@
 package com.alura.foro_hub.domain.topic;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum Status {
   OPEN("open"),
   CLOSED("closed");
 
   public final String state;
-
   Status(String state) {
     this.state = state;
   }
@@ -15,6 +16,7 @@ public enum Status {
     return state;
   }
 
+  @JsonCreator
   public static Status fromString(String state) {
     switch (state) {
       case "open":
