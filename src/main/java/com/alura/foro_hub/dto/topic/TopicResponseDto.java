@@ -11,7 +11,7 @@ public record TopicResponseDto(
     String title,
     String description,
     UserResponseDto author,
-    Status status,
+    String status,
     LocalDateTime createdAt) {
   public TopicResponseDto(Topic topic) {
     this(
@@ -19,7 +19,7 @@ public record TopicResponseDto(
         topic.getTitle(),
         topic.getDescription(),
         new UserResponseDto(topic.getAuthor()),
-        topic.getStatus(),
+        topic.getStatus().toString(),
         topic.getCreatedAt());
   }
 }
