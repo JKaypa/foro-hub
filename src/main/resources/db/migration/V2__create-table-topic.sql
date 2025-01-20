@@ -4,7 +4,7 @@ create table topic (
     description text not null,
     author bigint not null,
     status enum('open', 'closed') not null,
-    crated_at datetime not null,
+    created_at datetime not null,
 
     unique(description(255)),
     
