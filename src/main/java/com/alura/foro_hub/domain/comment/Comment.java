@@ -29,7 +29,7 @@ public class Comment {
 
   private String message;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "topic_id")
   private Topic topic;
 
@@ -38,4 +38,11 @@ public class Comment {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author")
   private User author;
+
+  public Comment(String message, Topic topic, User author){
+    this.message = message;
+    this.topic = topic;
+    this.author = author;
+    this.createdAt = LocalDateTime.now();
+  }
 }
