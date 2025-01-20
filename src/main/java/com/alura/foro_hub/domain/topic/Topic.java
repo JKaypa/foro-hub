@@ -8,9 +8,8 @@ import com.alura.foro_hub.domain.user.User;
 import com.alura.foro_hub.dto.topic.TopicRequestDto;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,7 +43,7 @@ public class Topic {
   @JoinColumn(name = "author")
   private User author;
 
-  @Enumerated(EnumType.STRING)
+  @Convert(converter = StatusConverter.class)
   private Status status;
 
   private LocalDateTime createdAt;
