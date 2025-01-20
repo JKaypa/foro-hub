@@ -5,8 +5,12 @@ import java.util.List;
 
 import com.alura.foro_hub.domain.comment.Comment;
 import com.alura.foro_hub.domain.user.User;
+import com.alura.foro_hub.dto.topic.TopicRequestDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,14 +37,23 @@ public class Topic {
 
   private String description;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "topic")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "topic", cascade = CascadeType.ALL)
   private List<Comment> comments;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author")
   private User author;
 
+  @Enumerated(EnumType.STRING)
   private Status status;
 
   private LocalDateTime createdAt;
+
+  public Topic(TopicRequestDto topic, User author){
+    this.title = topic.title();
+    this.description = topic.description();
+    this.author = author;
+    this.status = Status.OPEN;
+    this.createdAt = LocalDateTime.now();
+  }
 }
