@@ -34,4 +34,9 @@ public class ErrorHandler {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
   }
 
+  @ExceptionHandler(ValidationException.class)
+  public ResponseEntity<String> handleValidationException(ValidationException error){
+    return ResponseEntity.badRequest().body(error.getMessage());
+  }
+
 }
