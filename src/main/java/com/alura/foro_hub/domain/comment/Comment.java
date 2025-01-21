@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.alura.foro_hub.domain.topic.Topic;
 import com.alura.foro_hub.domain.user.User;
+import com.alura.foro_hub.dto.comment.UpdateCommentRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,5 +45,13 @@ public class Comment {
     this.topic = topic;
     this.author = author;
     this.createdAt = LocalDateTime.now();
+  }
+
+  public Comment update(UpdateCommentRequestDto updateComment){
+    if(updateComment.message() != null){
+      this.message = updateComment.message();
+    }
+
+    return this;
   }
 }
