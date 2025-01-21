@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alura.foro_hub.domain.user.User;
+import com.alura.foro_hub.infra.error.AuthException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
+
 
 
 @Service
@@ -37,16 +38,17 @@ public class TokenService {
     }
   }
 
-  public DecodedJWT verifyToken(String token) {
+  public String verifyToken(String token) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
       return JWT.require(algorithm)
           .withIssuer(ISSUER)
           .build()
-          .verify(token);
+          .verify(token)
+          .getSubject();
 
     } catch (JWTVerificationException exception) {
-      throw new RuntimeException("Token is not valid");
+      throw new AuthException("Token is not valid");
     }
   }
 
