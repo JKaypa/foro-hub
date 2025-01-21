@@ -3,9 +3,12 @@ package com.alura.foro_hub.domain.topic;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 import com.alura.foro_hub.domain.comment.Comment;
 import com.alura.foro_hub.domain.user.User;
 import com.alura.foro_hub.dto.topic.TopicRequestDto;
+import com.alura.foro_hub.dto.topic.UpdateTopicRequestDto;
+import com.alura.foro_hub.infra.error.ValidationException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
@@ -54,5 +57,23 @@ public class Topic {
     this.author = author;
     this.status = Status.OPEN;
     this.createdAt = LocalDateTime.now();
+  }
+
+  public Topic update (UpdateTopicRequestDto topic){
+    if(topic.title() != null){
+      this.title = topic.title();
+    }
+    if(topic.description() != null){
+      this.description = topic.description();
+    }
+    if(topic.status() != null){
+      this.status = Status.CLOSED;
+    }
+
+    if(topic.title() == null && topic.description() == null && topic.status() == null){
+      throw new ValidationException("At least one field must be filled.");
+    }
+
+    return this;
   }
 }
