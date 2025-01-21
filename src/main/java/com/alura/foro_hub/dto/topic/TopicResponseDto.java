@@ -2,7 +2,6 @@ package com.alura.foro_hub.dto.topic;
 
 import java.time.LocalDateTime;
 
-import com.alura.foro_hub.domain.topic.Status;
 import com.alura.foro_hub.domain.topic.Topic;
 import com.alura.foro_hub.dto.user.UserResponseDto;
 
