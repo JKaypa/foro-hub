@@ -4,10 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CommentRequestDto(
-    @NotBlank String message,
+        @NotBlank(message = "message should not be empty") String message,
 
-    @NotNull Long topic,
+        @NotNull(message = "topic should not be empty") Long topic,
 
-    @NotNull Long author) {
+        @NotNull(message = "author should not be empty") Long author) {
 
 }
