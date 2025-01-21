@@ -7,7 +7,10 @@ import com.alura.foro_hub.domain.topic.TopicRepository;
 import com.alura.foro_hub.domain.user.UserRepository;
 import com.alura.foro_hub.dto.comment.CommentRequestDto;
 import com.alura.foro_hub.dto.comment.CommentResponseDto;
+import com.alura.foro_hub.dto.comment.UpdateCommentRequestDto;
 import com.alura.foro_hub.infra.error.NotFoundException;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CommentService {
@@ -35,5 +38,24 @@ public class CommentService {
     var comment = commentRepository.save(new Comment(commentRequest.message(), topic.get(), user.get()));
 
     return new CommentResponseDto(comment);
+  }
+
+  @Transactional
+  public CommentResponseDto updateComment(Long id, UpdateCommentRequestDto updateComment) {
+    var comment = findCommentById(id);
+    comment.update(updateComment);
+
+    return new CommentResponseDto(comment);
+  }
+
+  public String deleteComment(Long id) {
+    var comment = findCommentById(id);
+    commentRepository.delete(comment);
+
+    return "Comment deleted.";
+  }
+
+  private Comment findCommentById(Long id) {
+    return commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Comment not found."));
   }
 }
