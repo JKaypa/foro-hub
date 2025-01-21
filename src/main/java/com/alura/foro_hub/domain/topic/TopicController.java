@@ -20,12 +20,14 @@ import com.alura.foro_hub.dto.topic.TopicRequestDto;
 import com.alura.foro_hub.dto.topic.TopicResponseDto;
 import com.alura.foro_hub.dto.topic.UpdateTopicRequestDto;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
 @RequestMapping("topic")
+@SecurityRequirement(name = "bearer-key")
 public class TopicController {
 
   @Autowired
