@@ -2,6 +2,7 @@ package com.alura.foro_hub.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.alura.foro_hub.domain.user.UserRepository;
 
@@ -20,25 +22,28 @@ import com.alura.foro_hub.domain.user.UserRepository;
 public class SecurityConfiguration {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, SecurityFilter securityFilter) throws Exception {
     return httpSecurity.csrf(csrf -> csrf.disable())
-    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-    .build();
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+            .anyRequest().authenticated())
+        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder(){
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
   }
 
   @Bean
   public UserDetailsService userDetailsService(UserRepository userRepository) {
-      return email -> userRepository.findByEmail(email)
-      .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    return email -> userRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
   }
 }
